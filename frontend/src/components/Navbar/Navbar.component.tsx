@@ -1,14 +1,16 @@
 import React from "react";
-import { Flex, Button, HStack, chakra } from "@chakra-ui/react";
+import { Flex, Button, HStack, chakra, useDisclosure } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { isLoggedin } from "../../helper/UIHelper";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../../reducers/authSlice";
 import LogoutButton from "../auth/LogoutButton";
+import { LoginModal } from "../auth/LoginModal.component";
 
 export const Navbar = () => {
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <chakra.header boxShadow={"md"} minH="10vh" zIndex="999">
@@ -48,8 +50,9 @@ export const Navbar = () => {
           ) : (
             <>
               <Link to="/login">
-                <Button variant="ghost" >Log in</Button>
+                <Button variant="ghost" onClick={onOpen}>Log in</Button>
               </Link>
+              <LoginModal isOpen={isOpen} onClose={onClose} children={undefined} />
               <Link to="/register">
                 <Button>Sign up</Button>
               </Link>
